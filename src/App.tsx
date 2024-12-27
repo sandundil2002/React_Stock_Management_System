@@ -1,11 +1,24 @@
 import './App.css'
-import {NavbarComponent} from "./components/NavbarComponent.tsx";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {RootLayoutComponent} from "./components/header/RootLayoutComponent.tsx";
+import {CustomerPage} from "./pages/CustomerPage.tsx";
 
 function App() {
 
+    const routes = createBrowserRouter([
+        {
+            path: '',
+            element : <RootLayoutComponent/>,
+            children : [
+                // { path : '', element : <Dashboard/>},
+                { path : '/customers', element : <CustomerPage/>},
+            ]
+        },
+    ])
+
   return (
     <>
-        <NavbarComponent />
+        <RouterProvider router={routes} />
     </>
   )
 }
