@@ -4,16 +4,23 @@ export const initialState:Customer[] = [];
 
 enum CustomerActionTypes {
     ADD_CUSTOMER = 'ADD_CUSTOMER',
-    DELETE_CUSTOMER = 'DELETE_CUSTOMER',
+    UPDATE_CUSTOMER = 'UPDATE_CUSTOMER',
     SEARCH_CUSTOMER = 'SEARCH_CUSTOMER',
-    UPDATE_CUSTOMER = 'UPDATE_CUSTOMER'
+    DELETE_CUSTOMER = 'DELETE_CUSTOMER',
 }
 
 export const CustomerReducer = (state = initialState, action: {type: string, payload: {name: string, address: string, mobile: number, email: string}}) => {
     switch (action.type) {
         case CustomerActionTypes.ADD_CUSTOMER:
-            return [...state, action.payload];
-            default:
-                return state;
+            return [...state, action.payload];,
+        case CustomerActionTypes.UPDATE_CUSTOMER:
+            return state.map((customer:Customer) => {
+                if (customer.email === action.payload.email) {
+                    return action.payload;
+                }
+                return customer;
+            });
+        default:
+            return state;
     }
 };
