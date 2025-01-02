@@ -1,6 +1,6 @@
 import {Customer} from "../models/customer.ts";
 
-export const initialState:Customer[] = [];
+const initialState:Customer[] = [];
 
 enum CustomerActionTypes {
     ADD_CUSTOMER = 'ADD_CUSTOMER',
@@ -8,7 +8,7 @@ enum CustomerActionTypes {
     DELETE_CUSTOMER = 'DELETE_CUSTOMER',
 }
 
-export const CustomerReducer = (state = initialState, action: {type: string, payload: {name: string, address: string, mobile: number, email: string}}) => {
+export const CustomerReducer = (state:Customer[] = initialState, action: {type: string, payload: {name: string, address: string, mobile: number, email: string}}) => {
     switch (action.type) {
         case CustomerActionTypes.ADD_CUSTOMER:
             return [...state, action.payload];
