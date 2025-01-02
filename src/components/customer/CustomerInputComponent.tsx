@@ -3,7 +3,7 @@ import {CustomerReducer} from "../../reducers/CustomerReducer.tsx";
 import {Customer} from "../../models/customer.ts";
 import {CustomerTableComponent} from "./CustomerTableComponent.tsx";
 
-export const InputFieldsComponent = () => {
+export const CustomerInputComponent = () => {
 
     const [customer, customerDispatch] = useReducer(CustomerReducer, []);
 

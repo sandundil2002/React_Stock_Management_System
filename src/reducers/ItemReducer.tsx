@@ -8,19 +8,19 @@ enum ItemActionTypes {
     DELETE_ITEM = 'DELETE_ITEM',
 }
 
-export const ItemReducer = (state:Item[] = initialState, action: {type: string, payload: {name: string, description: string, price: number, quantity: number}}) => {
+export const ItemReducer = (state:Item[] = initialState, action: {type: string, payload: {category: string, description: string, price: number, quantity: number}}) => {
     switch (action.type) {
         case ItemActionTypes.ADD_ITEM:
             return [...state, action.payload];
         case ItemActionTypes.UPDATE_ITEM:
             return state.map((item:Item) => {
-                if (item.name === action.payload.name) {
+                if (item.category === action.payload.category) {
                     return action.payload;
                 }
                 return item;
             });
         case ItemActionTypes.DELETE_ITEM:
-            return state.filter((item:Item) => item.name !== action.payload.name);
+            return state.filter((item:Item) => item.category !== action.payload.category);
         default:
             return state;
     }
