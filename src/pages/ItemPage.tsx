@@ -4,8 +4,10 @@ import {ItemInputComponent} from "../components/item/ItemInputComponent.tsx";
 export const ItemPage = () => {
     return (
         <>
-            <HeaderComponent section="Item Section" />
-            <ItemInputComponent />
+            <div className="mx-5">
+                <HeaderComponent section="Item Section"/>
+                <ItemInputComponent/>
+            </div>
         </>
     );
 };

@@ -4,8 +4,10 @@ import {CustomerInputComponent} from "../components/customer/CustomerInputCompon
 export const CustomerPage = () => {
     return (
         <>
-            <HeaderComponent section="Customer Section" />
-            <CustomerInputComponent />
+            <div className="mx-5">
+                <HeaderComponent section="Customer Section" />
+                <CustomerInputComponent />
+            </div>
         </>
     );
 };
