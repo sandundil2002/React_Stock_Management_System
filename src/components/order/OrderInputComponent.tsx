@@ -1,9 +1,12 @@
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Customer} from "../../models/customer.ts";
 import React, {useState} from "react";
 import {Item} from "../../models/item.ts";
+import {addOrder} from "../../reducers/OrderSlice.tsx";
 
 const OrderInputComponent = () => {
+    const dispatch = useDispatch();
+
     // @ts-ignore
     const customers = useSelector((state) => state.customer);
     const [customerName, setCustomerName] = useState('');
@@ -11,9 +14,9 @@ const OrderInputComponent = () => {
     // @ts-ignore
     const items = useSelector((state) => state.item);
     const [itemCategory, setItemCategory] = useState('');
-    const [itemPrice, setItemPrice] = useState('');
-    const [itemQty, setItemQty] = useState('');
-    const [selectedQty, setSelectedQty] = useState(1);
+    const [itemPrice, setItemPrice] = useState(0);
+    const [itemQty, setItemQty] = useState(0);
+    const [selectedQty, setSelectedQty] = useState(0);
 
     const [addedItems, setAddedItems] = useState([]);
 
@@ -47,8 +50,8 @@ const OrderInputComponent = () => {
             setItemQty(item.quantity);
         } else {
             setItemCategory('');
-            setItemPrice('');
-            setItemQty('');
+            setItemPrice(0);
+            setItemQty(0);
         }
     }
 
@@ -69,7 +72,7 @@ const OrderInputComponent = () => {
 
         const totalPrice = Number(itemPrice) * selectedQty;
 
-        if (selectedQty < Number(itemQty)) {
+        if (selectedQty <= Number(itemQty)) {
             const newItem = {
                 category: itemCategory,
                 unitPrice: itemPrice,
@@ -83,10 +86,40 @@ const OrderInputComponent = () => {
         } else {
             alert("Selected quantity is not available.");
         }
+    }
 
+    function placeOrder(type: string) {
+        const newOrder = addedItems.map((item: Item) => ({
+            customer: customerName,
+            mobile: Number(customers.find((customer: Customer) => customer.name === customerName)?.mobile),
+            category: item.category,
+            // @ts-ignore
+            unitPrice: item.unitPrice,
+            quantity: item.quantity,
+            // @ts-ignore
+            totalPrice: item.totalPrice,
+        }));
+
+        switch (type) {
+            case 'ADD_ORDER':
+                dispatch(addOrder(newOrder));
+                alert("Order placed successfully.");
+                resetTable();
+                break;
+            default:
+                break;
+        }
+    }
+
+    function resetTable() {
+        setAddedItems([]);
+        setCustomerName('');
+        setItemCategory('');
+        setSelectedQty(0);
     }
 
     return (
+        <>
         <div className="flex flex-wrap gap-8">
                 <div className="w-1/2">
                     <h2 className="text-3xl text-center text-blue-600 font-semibold mb-4">Order Details</h2>
@@ -126,7 +159,7 @@ const OrderInputComponent = () => {
                                 <th className="border p-2 text-left">Action</th>
                             </tr>
                             </thead>
-                            <tbody className="capitalize">
+                            <tbody id="tbl-order" className="capitalize">
                             {addedItems.map((item, index) => (
                                 <tr key={index}>
                                     {/*@ts-ignore*/}
@@ -155,12 +188,13 @@ const OrderInputComponent = () => {
                             <option value="Card">Card</option>
                         </select>
 
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full">
+                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full" onClick={() => placeOrder("ADD_ORDER")}>
                             Place Order
                         </button>
                     </div>
                 </div>
             </div>
+        </>
     );
 };
 
